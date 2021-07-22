@@ -1,7 +1,8 @@
-package com.petproject.gitissues
+package com.petproject.gitissues.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.petproject.gitissues.R
 
 class MainActivity : AppCompatActivity() {
 
