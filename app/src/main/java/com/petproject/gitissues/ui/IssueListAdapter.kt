@@ -35,8 +35,4 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.IssueViewHolder>(
     override fun getItemCount(): Int {
         return issues.size
     }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
 }
