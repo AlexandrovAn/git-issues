@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface IssueService {
     @GET("/repos/kachmazoff/study-helper-back/issues?state=all")
-    fun getIssuesList(): List<Issue>
+    suspend fun getIssuesList(): List<Issue>
 }

@@ -1,6 +1,7 @@
 package com.petproject.gitissues.di.modules
 
 import com.petproject.gitissues.remote.IssueService
+import com.petproject.gitissues.remote.NetworkProvider
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -11,18 +12,21 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
+    fun issueService() = NetworkProvider.issueService
 
-    @Provides
-    @Singleton
-    fun provideIssueService(retrofit: Retrofit): IssueService {
-        return retrofit.create(IssueService::class.java)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideRetrofit(): Retrofit {
+//        return Retrofit.Builder()
+//            .baseUrl("https://api.github.com/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideIssueService(retrofit: Retrofit): IssueService {
+//        return retrofit.create(IssueService::class.java)
+//    }
 
 }
