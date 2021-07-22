@@ -1,6 +1,7 @@
 package com.petproject.gitissues.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +27,15 @@ class IssueListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         issueItemBinding = IssueItemBinding.inflate(inflater, container, false)
-        issueRecyclerView = inflater.inflate(R.layout.issue_list_fragment,container,false).findViewById(R.id.issue_recycler)
-        issueRecyclerView.layoutManager = LinearLayoutManager(inflater.inflate(R.layout.issue_list_fragment,container,false).context)
+        issueRecyclerView = inflater.inflate(R.layout.issue_list_fragment, container, false)
+            .findViewById(R.id.issue_recycler)
+        issueRecyclerView.layoutManager = LinearLayoutManager(
+            inflater.inflate(
+                R.layout.issue_list_fragment,
+                container,
+                false
+            ).context
+        )
         return issueItemBinding.root
     }
 
@@ -37,7 +45,17 @@ class IssueListFragment : Fragment() {
         issueListAdapter.setHasStableIds(true)
         issueRecyclerView.adapter = issueListAdapter
 
-        viewModel.issues.observe(viewLifecycleOwner, Observer { issueListAdapter.setDataset(it) })
+
+
+        viewModel.issues.observe(viewLifecycleOwner, Observer {
+            Log.e("Fragmnet observer", "init")
+            Log.e("Size of Dataset", "size = " + it.size)
+            if (it.isEmpty()) {
+                Log.e("LiveData", "dataset is empty")
+            }
+            issueListAdapter.setDataset(it)
+            issueListAdapter.notifyDataSetChanged()
+        })
 
 
     }
