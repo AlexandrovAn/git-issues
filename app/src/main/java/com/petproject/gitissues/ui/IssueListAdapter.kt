@@ -1,5 +1,6 @@
 package com.petproject.gitissues.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +22,11 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.IssueViewHolder>(
 
     fun setDataset(list: List<Issue>){
         issues.addAll(list)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: IssueViewHolder, position: Int) {
+        Log.e("OnBindViewHolder","init")
         holder.binding.issue = issues[position]
     }
 

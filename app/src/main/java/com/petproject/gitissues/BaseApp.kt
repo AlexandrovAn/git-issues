@@ -1,4 +1,4 @@
-package com.petproject.gitissues.di
+package com.petproject.gitissues
 
 import android.app.Application
 import com.petproject.gitissues.di.components.AppComponent

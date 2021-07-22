@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.petproject.gitissues.di.BaseApp
+import com.petproject.gitissues.BaseApp
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.repository.IssueRepo
 import javax.inject.Inject
