@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">git-issues</string>
+    <string name="author_avatar_description">author avatar</string>
+    <string name="issue_number_author"># %1$s opened by %2$s</string>
 </resources>

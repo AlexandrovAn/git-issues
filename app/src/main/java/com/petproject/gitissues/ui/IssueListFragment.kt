@@ -1,7 +1,6 @@
 package com.petproject.gitissues.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.petproject.gitissues.viewmodel.IssueViewModel
 class IssueListFragment : Fragment() {
 
     private val viewModel: IssueViewModel by activityViewModels()
-    private lateinit var binding: IssueListFragmentBinding
+    private lateinit var binding:IssueListFragmentBinding
 
 
     override fun onCreateView(
@@ -33,11 +32,6 @@ class IssueListFragment : Fragment() {
             adapter = issueListAdapter
         }
         viewModel.issues.observe(viewLifecycleOwner, Observer {
-            Log.e("Fragmnet observer", "init")
-            Log.e("Size of Dataset", "size = " + it.size)
-            if (it.isEmpty()) {
-                Log.e("LiveData", "dataset is empty")
-            }
             issueListAdapter.setDataset(it)
         })
 

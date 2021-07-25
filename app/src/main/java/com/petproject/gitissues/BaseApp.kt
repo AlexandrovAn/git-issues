@@ -5,6 +5,11 @@ import com.petproject.gitissues.di.components.AppComponent
 import com.petproject.gitissues.di.components.DaggerAppComponent
 import com.petproject.gitissues.di.modules.AppModule
 
-public class BaseApp : Application() {
-    val component: AppComponent = DaggerAppComponent.builder().appModule(AppModule((this))).build()
+class BaseApp : Application() {
+    lateinit var component: AppComponent
+
+    override fun onCreate() {
+        super.onCreate()
+        component = DaggerAppComponent.builder().appModule(AppModule((this))).build()
+    }
 }
