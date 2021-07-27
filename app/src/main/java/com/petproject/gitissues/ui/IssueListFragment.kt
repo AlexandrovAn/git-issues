@@ -1,5 +1,6 @@
 package com.petproject.gitissues.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.petproject.gitissues.viewmodel.IssueViewModel
 class IssueListFragment : Fragment() {
 
     private val viewModel: IssueViewModel by activityViewModels()
-    private lateinit var binding:IssueListFragmentBinding
+    private lateinit var binding: IssueListFragmentBinding
 
 
     override fun onCreateView(
@@ -38,7 +39,9 @@ class IssueListFragment : Fragment() {
         })
         issueListAdapter.clickListener = {
             viewModel.setSelectItem(it)
-            Navigation.findNavController(binding.root).navigate(R.id.detail_fragment)
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Navigation.findNavController(binding.root).navigate(R.id.detail_fragment)
+            }
         }
 
 
