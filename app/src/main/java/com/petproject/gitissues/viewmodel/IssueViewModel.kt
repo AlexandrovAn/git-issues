@@ -13,6 +13,7 @@ import javax.inject.Inject
 class IssueViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var issueRepo: IssueRepo
+    private val selectIssuePosition: MutableLiveData<Int> = MutableLiveData<Int>()
     private val issueData: MutableLiveData<List<Issue>> = MutableLiveData<List<Issue>>()
     private val issuesObserver = Observer<List<Issue>> {
         it ?: return@Observer
@@ -26,6 +27,11 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
 
     val issues: LiveData<List<Issue>> get() = issueData
 
+    fun setSelectItem(selectItemPosition: Int){
+        selectIssuePosition.value = selectItemPosition
+    }
+
+    val selected: LiveData<Int> = selectIssuePosition
     override fun onCleared() {
         issueRepo.data.removeObserver(issuesObserver)
         super.onCleared()

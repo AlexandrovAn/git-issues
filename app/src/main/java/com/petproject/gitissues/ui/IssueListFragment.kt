@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import com.petproject.gitissues.R
 import com.petproject.gitissues.databinding.IssueListFragmentBinding
 import com.petproject.gitissues.viewmodel.IssueViewModel
 
@@ -34,6 +36,10 @@ class IssueListFragment : Fragment() {
         viewModel.issues.observe(viewLifecycleOwner, Observer {
             issueListAdapter.setDataset(it)
         })
+        issueListAdapter.clickListener = {
+            viewModel.setSelectItem(it)
+            Navigation.findNavController(binding.root).navigate(R.id.detail_fragment)
+        }
 
 
     }

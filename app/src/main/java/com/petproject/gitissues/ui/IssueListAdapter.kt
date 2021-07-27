@@ -10,6 +10,7 @@ import com.petproject.gitissues.model.Issue
 class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.IssueViewHolder>() {
 
     private var issues = mutableListOf<Issue>()
+    var clickListener: ((selectItemNum: Int)->Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -17,7 +18,14 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.IssueViewHolder>(
     ): IssueViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding: IssueItemBinding = IssueItemBinding.inflate(inflater, parent, false)
-        return IssueViewHolder(binding)
+        val holder = IssueViewHolder(binding)
+        holder.binding.root.setOnClickListener{
+            if(holder.bindingAdapterPosition != RecyclerView.NO_POSITION){
+                Log.e("onClickListener","init")
+                clickListener?.invoke(holder.bindingAdapterPosition)
+            }
+        }
+        return holder
     }
 
     fun setDataset(list: List<Issue>){
