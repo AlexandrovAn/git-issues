@@ -4,4 +4,7 @@
     <string name="issue_number_author"># %1$s opened by %2$s</string>
     <string name="author_tv">Author</string>
     <string name="assignee_tv">Assignee</string>
+    <string name="toast_successful_update">Update successful</string>
+    <string name="toast_connection_lost_update">Your internet connection lost</string>
+    <string name="toast_unknown_error_update">Can`t update list. Unknown error </string>
 </resources>
