@@ -44,6 +44,10 @@ class IssueListFragment : Fragment() {
             }
         }
 
+        binding.swipeRefLayout?.setOnRefreshListener {
+            viewModel.updateIssuesList()
+            binding.swipeRefLayout!!.isRefreshing = false
+        }
 
     }
 }

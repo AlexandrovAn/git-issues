@@ -1,13 +1,11 @@
 package com.petproject.gitissues.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import com.petproject.gitissues.BaseApp
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.repository.IssueRepo
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class IssueViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,6 +30,11 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val selected: LiveData<Int> = selectIssuePosition
+
+    fun updateIssuesList(){
+        viewModelScope.launch { issueRepo.updateDataset() }
+    }
+
     override fun onCleared() {
         issueRepo.data.removeObserver(issuesObserver)
         super.onCleared()

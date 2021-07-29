@@ -14,19 +14,4 @@ class NetworkModule {
     @Provides
     fun issueService() = NetworkProvider.issueService
 
-//    @Provides
-//    @Singleton
-//    fun provideRetrofit(): Retrofit {
-//        return Retrofit.Builder()
-//            .baseUrl("https://api.github.com/")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun provideIssueService(retrofit: Retrofit): IssueService {
-//        return retrofit.create(IssueService::class.java)
-//    }
-
 }
