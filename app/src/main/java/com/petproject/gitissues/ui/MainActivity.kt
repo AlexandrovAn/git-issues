@@ -1,5 +1,7 @@
 package com.petproject.gitissues.ui
 
+import android.content.res.Configuration
+import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -14,5 +16,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(IssueViewModel::class.java)
+    }
+
+    override fun onBackPressed() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            super.onBackPressed()
+        }
     }
 }
