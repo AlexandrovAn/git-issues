@@ -3,7 +3,6 @@ package com.petproject.gitissues.ui
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.petproject.gitissues.R
 import com.petproject.gitissues.databinding.IssueListFragmentBinding
-import com.petproject.gitissues.repository.UpdateStatus
+import com.petproject.gitissues.model.Issue
+import com.petproject.gitissues.repository.State
 import com.petproject.gitissues.viewmodel.IssueViewModel
 
 class IssueListFragment : Fragment() {
@@ -42,28 +42,45 @@ class IssueListFragment : Fragment() {
         binding.swipeRefLayout?.setOnRefreshListener {
             viewModel.updateIssuesList()
         }
-        viewModel.issues.observe(viewLifecycleOwner, Observer {
-            issueListAdapter.setDataset(it)
-        })
-        viewModel.status.observe(viewLifecycleOwner, Observer {
+        viewModel.issuesState.observe(viewLifecycleOwner, Observer {
             when (it) {
-                UpdateStatus.SUCCESSFUL -> Toast.makeText(
-                    activity,
-                    getString(R.string.toast_successful_update),
-                    Toast.LENGTH_SHORT
-                ).show()
-                UpdateStatus.CONNECTION_LOST -> Toast.makeText(
-                    activity,
-                    getString(R.string.toast_connection_lost_update),
-                    Toast.LENGTH_SHORT
-                ).show()
-                UpdateStatus.UNKNOWN_ERROR -> Toast.makeText(
-                    activity,
-                    getString(R.string.toast_unknown_error_update),
-                    Toast.LENGTH_SHORT
-                ).show()
+                is State.DefaultStateWithDataset -> issueListAdapter.setDataset(it.defaultIssueList)
+                is State.UpdateFromDB -> {
+                    val currentDBList: List<Issue> = it.dbIssueList
+                    issueListAdapter.setDataset(currentDBList)
+                    viewModel.setIssuesState(State.DefaultStateWithDataset(currentDBList))
+                }
+                is State.SuccessfulUpdate -> {
+                    val currentUpdateList: List<Issue> = it.updatedIssueList
+                    issueListAdapter.setDataset(currentUpdateList)
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.toast_successful_update),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.swipeRefLayout!!.isRefreshing = false
+                    viewModel.setIssuesState(State.DefaultStateWithDataset(currentUpdateList))
+                }
+                is State.LostInternetConnection -> {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.toast_connection_lost_update),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.swipeRefLayout!!.isRefreshing = false
+                    viewModel.setIssuesState(State.DefaultState)
+                }
+                is State.ErrorOfUpdate -> {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.toast_unknown_error_update),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.swipeRefLayout!!.isRefreshing = false
+                    viewModel.setIssuesState(State.DefaultState)
+                }
             }
-            binding.swipeRefLayout!!.isRefreshing = false
+
         })
         issueListAdapter.clickListener = {
             viewModel.setSelectItem(it)

@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.petproject.gitissues.R
 import com.petproject.gitissues.databinding.IssueDetailFragmentBinding
 import com.petproject.gitissues.model.Issue
+import com.petproject.gitissues.repository.State
 import com.petproject.gitissues.viewmodel.IssueViewModel
 
 class DetailFragment : Fragment() {
@@ -28,8 +29,13 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.issues.observe(viewLifecycleOwner, {
-            currentIssuesList = it
+        viewModel.issuesState.observe(viewLifecycleOwner, {
+            when (it) {
+                is State.DefaultStateWithDataset -> currentIssuesList = it.defaultIssueList
+                is State.SuccessfulUpdate -> currentIssuesList = it.updatedIssueList
+                is State.UpdateFromDB -> currentIssuesList = it.dbIssueList
+            }
+
         })
         viewModel.selected.observe(viewLifecycleOwner, {
             binding.issue = currentIssuesList[it]

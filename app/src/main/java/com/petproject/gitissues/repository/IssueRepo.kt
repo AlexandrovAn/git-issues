@@ -26,27 +26,22 @@ class IssueRepo @Inject constructor(
     private val dao: IssueDao,
     private val context: Context
 ) {
-    private val issuesData: MutableLiveData<List<Issue>> = MutableLiveData<List<Issue>>()
-    private val updateStatus: MutableLiveData<UpdateStatus> = MutableLiveData<UpdateStatus>()
-
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-
-            issuesData.postValue(getDatasetFromDB())
+    suspend fun getIssuesDataset(needToUpdate: Boolean): State {
+        if (needToUpdate) {
+            return updateDataset()
         }
+        return getDatasetFromDB()
     }
 
-    suspend fun updateDataset() {
-        if (isOnline(context)) {
+    private suspend fun updateDataset(): State {
+        return if (isOnline(context)) {
             try {
-                issuesData.postValue(getDatasetFromNetwork())
-                updateStatus.postValue(UpdateStatus.SUCCESSFUL)
+                State.SuccessfulUpdate(getDatasetFromNetwork())
             } catch (e: Exception) {
-                updateStatus.postValue(UpdateStatus.UNKNOWN_ERROR)
+                State.ErrorOfUpdate
             }
         } else {
-            updateStatus.postValue(UpdateStatus.CONNECTION_LOST)
+            State.LostInternetConnection
         }
     }
 
@@ -56,15 +51,12 @@ class IssueRepo @Inject constructor(
         return@withContext dataset
     }
 
-    private suspend fun getDatasetFromDB(): List<Issue> {
+    private suspend fun getDatasetFromDB(): State {
         if (dao.getAll().isEmpty()) {
             updateDataset()
         }
-        return dao.getAll()
+        return State.UpdateFromDB(dao.getAll())
     }
-
-    val data: LiveData<List<Issue>> get() = issuesData
-    val status: LiveData<UpdateStatus> get() = updateStatus
 
     private fun isOnline(context: Context): Boolean {
         val connectivityManager =
