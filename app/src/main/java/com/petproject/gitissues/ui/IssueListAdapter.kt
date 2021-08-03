@@ -29,6 +29,7 @@ class IssueListAdapter : RecyclerView.Adapter<IssueListAdapter.IssueViewHolder>(
     }
 
     fun setDataset(list: List<Issue>){
+        issues.clear()
         issues.addAll(list)
         notifyDataSetChanged()
     }

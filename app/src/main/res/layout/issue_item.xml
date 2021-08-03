@@ -11,39 +11,30 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="16dp">
+        style="@style/ItemContainerStyle"
+        android:layout_width="match_parent">
 
         <ImageView
             android:id="@+id/user_avatar_iv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="center"
+            style="@style/AvatarImageStyle"
+            android:contentDescription="@string/author_avatar_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:profileImage="@{Issue.user.avatarUrl}"
-            android:contentDescription="@string/author_avatar_description" />
+            app:profileImage="@{Issue.user.avatarUrl}" />
 
         <TextView
             android:id="@+id/issue_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+            style="@style/ItemDescriptionStyle"
             android:text="@{Issue.title}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/user_avatar_iv" />
+            app:layout_constraintStart_toEndOf="@id/user_avatar_iv"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/secondary_text_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+            style="@style/ItemDescriptionStyle"
             android:text="@{String.format(@string/issue_number_author,String.valueOf(Issue.number),String.valueOf(Issue.user.login))}"
-            app:layout_constraintTop_toBottomOf="@id/issue_title"
-            app:layout_constraintStart_toEndOf="@id/user_avatar_iv"/>
+            app:layout_constraintStart_toEndOf="@id/user_avatar_iv"
+            app:layout_constraintTop_toBottomOf="@id/issue_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

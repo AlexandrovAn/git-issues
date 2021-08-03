@@ -8,4 +8,5 @@
     <string name="toast_successful_update">Update successful</string>
     <string name="toast_connection_lost_update">Your internet connection lost</string>
     <string name="toast_unknown_error_update">Can`t update list. Unknown error </string>
+    <string name="assignee_avatar_description">assignee avatar</string>
 </resources>
