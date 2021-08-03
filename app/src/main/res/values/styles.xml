@@ -14,7 +14,7 @@
 
     <style name="ToolbarTextStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:textColor">@color/whiteColor</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:textSize">20sp</item>

@@ -9,10 +9,9 @@
             type="com.petproject.gitissues.model.Issue" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/issue_title_detail_tv"
@@ -21,99 +20,104 @@
             android:gravity="center"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@{Issue.title}" />
+            android:paddingTop="16dp"
+            android:text="@{Issue.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id='@+id/author_container'
+            android:layout_width="0dp"
             android:layout_height="72dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toStartOf="@id/assignee_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/issue_title_detail_tv">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            <ImageView
+                android:id="@+id/author_avatar_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/author_avatar_description"
+                android:scaleType="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:profileImage='@{Issue.user.avatarUrl ?? ""}' />
+
+            <TextView
+                android:id="@+id/author_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:text="@string/author_tv"
+                app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/author_avatar_iv"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="@string/author_avatar_description"
-                    android:scaleType="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:profileImage='@{Issue.user.avatarUrl ?? ""}' />
-
-                <TextView
-                    android:id="@+id/author_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="@string/author_tv"
-                    app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/author_login_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="@{Issue.user.login}"
-                    app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
-                    app:layout_constraintTop_toBottomOf="@id/author_tv" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            <TextView
+                android:id="@+id/author_login_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:text="@{Issue.user.login}"
+                app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
+                app:layout_constraintTop_toBottomOf="@id/author_tv" />
 
-                <ImageView
-                    android:id="@+id/assignee_avatar_iv"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="@string/author_avatar_description"
-                    android:scaleType="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:profileImage='@{Issue.assignee.avatarUrl ?? "" }' />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/assignee_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="@string/assignee_tv"
-                    app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id='@+id/assignee_container'
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/author_container"
+            app:layout_constraintTop_toBottomOf="@id/issue_title_detail_tv">
 
-                <TextView
-                    android:id="@+id/assignee_login_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text='@{Issue.assignee.login ?? "None assignee"}'
-                    app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
-                    app:layout_constraintTop_toBottomOf="@id/assignee_tv" />
+            <ImageView
+                android:id="@+id/assignee_avatar_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/author_avatar_description"
+                android:scaleType="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:profileImage='@{Issue.assignee.avatarUrl ?? "" }' />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/assignee_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/assignee_tv"
+                app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/assignee_login_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text='@{Issue.assignee.login ?? "None assignee"}'
+                app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
+                app:layout_constraintTop_toBottomOf="@id/assignee_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/author_container">
 
             <TextView
                 android:id="@+id/issue_body_detail_tv"
@@ -126,7 +130,7 @@
         </androidx.core.widget.NestedScrollView>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>
