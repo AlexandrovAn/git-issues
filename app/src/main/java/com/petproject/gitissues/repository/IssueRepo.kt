@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.util.Log
+import androidx.annotation.NonNull
 import com.petproject.gitissues.db.IssueDao
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.remote.IssueService
@@ -20,12 +20,8 @@ class IssueRepo @Inject constructor(
     private val dao: IssueDao,
     private val context: Context
 ) {
-    suspend fun getIssuesDataset(needToUpdate: Boolean): State {
-        if (needToUpdate) {
-            return updateDataset()
-        }
-        return getDatasetFromDB()
-    }
+    suspend fun getIssuesDataset(needToUpdate: Boolean = false): State =
+        if (needToUpdate) updateDataset() else getDatasetFromDB()
 
     private suspend fun updateDataset(): State {
         return if (isOnline(context)) {
@@ -53,6 +49,7 @@ class IssueRepo @Inject constructor(
         return State.UpdateState(dao.getAll(), UpdateStatus.DB_UPDATE)
     }
 
+    @NonNull
     private fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

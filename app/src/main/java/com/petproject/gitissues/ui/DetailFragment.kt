@@ -35,7 +35,11 @@ class DetailFragment : Fragment() {
             }
         })
         viewModel.selected.observe(viewLifecycleOwner, {
-            binding.issue = currentIssuesList[it]
+            if (it != -1) {
+                binding.issue = currentIssuesList[it]
+            } else {
+                binding.unbind()
+            }
         })
         binding.detailFragmentToolbar?.apply {
             setNavigationIcon(R.drawable.back_icon)

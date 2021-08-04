@@ -20,7 +20,7 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
     init {
         (application as BaseApp).component.inject(this)
         CoroutineScope(Dispatchers.IO).launch {
-            issueData.postValue(issueRepo.getIssuesDataset(false))
+            issueData.postValue(issueRepo.getIssuesDataset())
         }
     }
 
