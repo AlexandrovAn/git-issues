@@ -13,4 +13,7 @@ interface IssueDao {
 
     @Delete
     suspend fun delete(issue: Issue)
+
+    @Query("DELETE FROM ISSUES_TABLE")
+    suspend fun clear()
 }

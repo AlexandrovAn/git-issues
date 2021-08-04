@@ -31,11 +31,8 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.issuesState.observe(viewLifecycleOwner, {
             when (it) {
-                is State.DefaultStateWithDataset -> currentIssuesList = it.defaultIssueList
-                is State.SuccessfulUpdate -> currentIssuesList = it.updatedIssueList
-                is State.UpdateFromDB -> currentIssuesList = it.dbIssueList
+                is State.UpdateState -> currentIssuesList = it.issueList
             }
-
         })
         viewModel.selected.observe(viewLifecycleOwner, {
             binding.issue = currentIssuesList[it]

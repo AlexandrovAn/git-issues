@@ -3,18 +3,12 @@ package com.petproject.gitissues.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.os.Build
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.petproject.gitissues.BaseApp
 import com.petproject.gitissues.db.IssueDao
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.remote.IssueService
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
@@ -36,7 +30,7 @@ class IssueRepo @Inject constructor(
     private suspend fun updateDataset(): State {
         return if (isOnline(context)) {
             try {
-                State.SuccessfulUpdate(getDatasetFromNetwork())
+                State.UpdateState(getDatasetFromNetwork(), UpdateStatus.NETWORK_UPDATE)
             } catch (e: Exception) {
                 State.ErrorOfUpdate
             }
@@ -47,6 +41,7 @@ class IssueRepo @Inject constructor(
 
     private suspend fun getDatasetFromNetwork(): List<Issue> = withContext(Dispatchers.IO) {
         val dataset = issueService.getIssuesList()
+        dao.clear()
         dao.insertAll(dataset)
         return@withContext dataset
     }
@@ -55,7 +50,7 @@ class IssueRepo @Inject constructor(
         if (dao.getAll().isEmpty()) {
             updateDataset()
         }
-        return State.UpdateFromDB(dao.getAll())
+        return State.UpdateState(dao.getAll(), UpdateStatus.DB_UPDATE)
     }
 
     private fun isOnline(context: Context): Boolean {

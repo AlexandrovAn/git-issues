@@ -6,6 +6,7 @@
     <string name="author_tv">Author</string>
     <string name="assignee_tv">Assignee</string>
     <string name="toast_successful_update">Update successful</string>
+    <string name="toast_update_form_db">Update from db is successful</string>
     <string name="toast_connection_lost_update">Your internet connection lost</string>
     <string name="toast_unknown_error_update">Can`t update list. Unknown error </string>
     <string name="assignee_avatar_description">assignee avatar</string>
