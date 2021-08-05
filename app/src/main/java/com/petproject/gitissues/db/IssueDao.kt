@@ -5,7 +5,7 @@ import com.petproject.gitissues.model.Issue
 
 @Dao
 interface IssueDao {
-    @Query("SELECT * FROM ISSUES_TABLE")
+    @Query("SELECT * FROM ISSUES_TABLE ORDER BY id DESC")
     suspend fun getAll(): List<Issue>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

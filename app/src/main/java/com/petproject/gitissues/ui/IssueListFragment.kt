@@ -36,6 +36,7 @@ class IssueListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val issueListAdapter = IssueListAdapter()
+        issueListAdapter.setHasStableIds(true)
         with(binding.issueRecycler) {
             adapter = issueListAdapter
         }
@@ -58,13 +59,8 @@ class IssueListFragment : Fragment() {
                             binding.swipeRefLayout!!.isRefreshing = false
                         }
                         UpdateStatus.DB_UPDATE -> {
-                            Toast.makeText(
-                                activity,
-                                getString(R.string.toast_update_form_db),
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.setIssuesState(State.UpdateState(currentList))
-                            binding.swipeRefLayout!!.isRefreshing = false
+                            binding.swipeRefLayout!!.isRefreshing = true
                         }
                     }
                 }

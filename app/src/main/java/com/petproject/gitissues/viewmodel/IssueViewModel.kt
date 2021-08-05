@@ -7,6 +7,9 @@ import com.petproject.gitissues.repository.IssueRepo
 import com.petproject.gitissues.repository.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,9 +22,9 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         (application as BaseApp).component.inject(this)
-        CoroutineScope(Dispatchers.IO).launch {
-            issueData.postValue(issueRepo.getIssuesDataset())
-        }
+        issueRepo.dataInit().onEach { state ->
+            issueData.postValue(state)
+        }.launchIn(viewModelScope)
     }
 
     val issuesState: LiveData<State> get() = issueData
@@ -37,6 +40,8 @@ class IssueViewModel(application: Application) : AndroidViewModel(application) {
     val selected: LiveData<Int> = selectIssuePosition
 
     fun updateIssuesList() {
-        viewModelScope.launch { issueData.postValue(issueRepo.getIssuesDataset(true)) }
+        issueRepo.dataInit(true).onEach { state ->
+            issueData.postValue(state)
+        }.launchIn(viewModelScope)
     }
 }

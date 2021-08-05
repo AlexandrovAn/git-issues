@@ -9,6 +9,9 @@ import com.petproject.gitissues.db.IssueDao
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.remote.IssueService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
@@ -20,8 +23,13 @@ class IssueRepo @Inject constructor(
     private val dao: IssueDao,
     private val context: Context
 ) {
-    suspend fun getIssuesDataset(needToUpdate: Boolean = false): State =
-        if (needToUpdate) updateDataset() else getDatasetFromDB()
+
+    fun dataInit(onlyUpdate: Boolean = false): Flow<State> = flow {
+        if (!onlyUpdate) {
+            emit(getDatasetFromDB())
+        }
+        emit(updateDataset())
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun updateDataset(): State {
         return if (isOnline(context)) {
@@ -35,21 +43,17 @@ class IssueRepo @Inject constructor(
         }
     }
 
-    private suspend fun getDatasetFromNetwork(): List<Issue> = withContext(Dispatchers.IO) {
+    private suspend fun getDatasetFromNetwork(): List<Issue> {
         val dataset = issueService.getIssuesList()
         dao.clear()
         dao.insertAll(dataset)
-        return@withContext dataset
+        return dataset
     }
 
     private suspend fun getDatasetFromDB(): State {
-        if (dao.getAll().isEmpty()) {
-            updateDataset()
-        }
         return State.UpdateState(dao.getAll(), UpdateStatus.DB_UPDATE)
     }
 
-    @NonNull
     private fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
