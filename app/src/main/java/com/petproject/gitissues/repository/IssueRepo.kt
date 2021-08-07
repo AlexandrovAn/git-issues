@@ -6,8 +6,10 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.NonNull
 import com.petproject.gitissues.db.IssueDao
+import com.petproject.gitissues.di.modules.IoDispatcher
 import com.petproject.gitissues.model.Issue
 import com.petproject.gitissues.remote.IssueService
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,7 +23,8 @@ import javax.inject.Singleton
 class IssueRepo @Inject constructor(
     private val issueService: IssueService,
     private val dao: IssueDao,
-    private val context: Context
+    private val context: Context,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun dataInit(onlyUpdate: Boolean = false): Flow<State> = flow {
@@ -29,7 +32,7 @@ class IssueRepo @Inject constructor(
             emit(getDatasetFromDB())
         }
         emit(updateDataset())
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
     private suspend fun updateDataset(): State {
         return if (isOnline(context)) {

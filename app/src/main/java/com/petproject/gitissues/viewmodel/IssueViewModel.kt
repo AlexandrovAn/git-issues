@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class IssueViewModel(application: Application) : AndroidViewModel(application) {
+class IssueViewModel (application: Application) : ViewModel() {
     @Inject
     lateinit var issueRepo: IssueRepo
     private val selectIssuePosition: MutableLiveData<Int> = MutableLiveData<Int>()
