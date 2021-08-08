@@ -1,18 +1,18 @@
 package com.petproject.gitissues.ui
 
 import android.content.res.Configuration
-import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.petproject.gitissues.R
+import com.petproject.gitissues.BaseApp
 import com.petproject.gitissues.databinding.ActivityMainBinding
 import com.petproject.gitissues.viewmodel.IssueViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: IssueViewModel by viewModels()
+    private val viewModel: IssueViewModel by viewModels() {
+        (this.application as BaseApp).component.getIssueViewModelFactory()
+    }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

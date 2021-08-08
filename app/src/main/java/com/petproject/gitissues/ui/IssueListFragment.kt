@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.petproject.gitissues.BaseApp
 import com.petproject.gitissues.R
 import com.petproject.gitissues.databinding.IssueListFragmentBinding
 import com.petproject.gitissues.repository.State
@@ -19,7 +20,9 @@ import com.petproject.gitissues.viewmodel.IssueViewModel
 
 class IssueListFragment : Fragment() {
 
-    private val viewModel: IssueViewModel by activityViewModels()
+    private val viewModel: IssueViewModel by activityViewModels() {
+        (requireActivity().application as BaseApp).component.getIssueViewModelFactory()
+    }
     private lateinit var binding: IssueListFragmentBinding
 
 
@@ -37,9 +40,7 @@ class IssueListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val issueListAdapter = IssueListAdapter()
         issueListAdapter.setHasStableIds(true)
-        with(binding.issueRecycler) {
-            adapter = issueListAdapter
-        }
+        binding.issueRecycler.adapter = issueListAdapter
         binding.swipeRefLayout?.setOnRefreshListener {
             viewModel.updateIssuesList()
         }
@@ -50,35 +51,23 @@ class IssueListFragment : Fragment() {
                     issueListAdapter.setDataset(currentList)
                     when (it.status) {
                         UpdateStatus.NETWORK_UPDATE -> {
-                            Toast.makeText(
-                                activity,
-                                getString(R.string.toast_successful_update),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            viewModel.setIssuesState(State.UpdateState(currentList))
+                            showInfoToast(R.string.toast_successful_update)
                             binding.swipeRefLayout!!.isRefreshing = false
+                            viewModel.setIssuesState(State.UpdateState(currentList))
                         }
                         UpdateStatus.DB_UPDATE -> {
-                            viewModel.setIssuesState(State.UpdateState(currentList))
                             binding.swipeRefLayout!!.isRefreshing = true
+                            viewModel.setIssuesState(State.UpdateState(currentList))
                         }
                     }
                 }
                 is State.LostInternetConnection -> {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.toast_connection_lost_update),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showInfoToast(R.string.toast_connection_lost_update)
                     binding.swipeRefLayout!!.isRefreshing = false
                     viewModel.setIssuesState(State.DefaultState)
                 }
                 is State.ErrorOfUpdate -> {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.toast_unknown_error_update),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showInfoToast(R.string.toast_unknown_error_update)
                     binding.swipeRefLayout!!.isRefreshing = false
                     viewModel.setIssuesState(State.DefaultState)
                 }
@@ -90,5 +79,13 @@ class IssueListFragment : Fragment() {
                 Navigation.findNavController(binding.root).navigate(R.id.detail_fragment)
             }
         }
+    }
+
+    private fun showInfoToast(stringResId: Int) {
+        Toast.makeText(
+            activity,
+            getString(stringResId),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

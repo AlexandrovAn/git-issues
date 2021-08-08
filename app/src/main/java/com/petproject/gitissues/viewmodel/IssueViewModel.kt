@@ -13,16 +13,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class IssueViewModel (application: Application) : ViewModel() {
-    @Inject
-    lateinit var issueRepo: IssueRepo
+class IssueViewModel(private val repo: IssueRepo) : ViewModel() {
+
     private val selectIssuePosition: MutableLiveData<Int> = MutableLiveData<Int>()
     private val issueData: MutableLiveData<State> = MutableLiveData<State>()
 
 
     init {
-        (application as BaseApp).component.inject(this)
-        issueRepo.dataInit().onEach { state ->
+        repo.dataInit().onEach { state ->
             issueData.postValue(state)
         }.launchIn(viewModelScope)
     }
@@ -40,7 +38,7 @@ class IssueViewModel (application: Application) : ViewModel() {
     val selected: LiveData<Int> = selectIssuePosition
 
     fun updateIssuesList() {
-        issueRepo.dataInit(true).onEach { state ->
+        repo.dataInit(true).onEach { state ->
             issueData.postValue(state)
         }.launchIn(viewModelScope)
     }
