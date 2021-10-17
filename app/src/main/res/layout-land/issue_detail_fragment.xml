@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/issue_title_detail_tv"
+        style="@style/IssueTitleStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id='@+id/author_container'
+        style="@style/ItemContainerStyle"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@id/assignee_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/issue_title_detail_tv">
+
+        <ImageView
+            android:id="@+id/author_avatar_iv"
+            style="@style/AvatarImageStyle"
+            android:contentDescription="@string/author_avatar_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+           />
+
+        <TextView
+            android:id="@+id/author_tv"
+            style="@style/ItemDescriptionStyle"
+            android:text="@string/author_tv"
+            app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/author_login_tv"
+            style="@style/ItemDescriptionStyle"
+            app:layout_constraintStart_toEndOf="@id/author_avatar_iv"
+            app:layout_constraintTop_toBottomOf="@id/author_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id='@+id/assignee_container'
+        style="@style/ItemContainerStyle"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/author_container"
+        app:layout_constraintTop_toBottomOf="@id/issue_title_detail_tv">
+
+        <ImageView
+            android:id="@+id/assignee_avatar_iv"
+            style="@style/AvatarImageStyle"
+            android:contentDescription="@string/assignee_avatar_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/assignee_tv"
+            style="@style/ItemDescriptionStyle"
+            android:text="@string/assignee_tv"
+            app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/assignee_login_tv"
+            style="@style/ItemDescriptionStyle"
+            app:layout_constraintStart_toEndOf="@id/assignee_avatar_iv"
+            app:layout_constraintTop_toBottomOf="@id/assignee_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/author_container">
+
+        <TextView
+            android:id="@+id/issue_body_detail_tv"
+            style="@style/IssueBodyStyle"
+            />
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
